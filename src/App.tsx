@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Professionals, Pro } from "./professionalsTypes";
-import ReactPaginate from "react-paginate";
-import { Dropdown, Input, Button, DropdownItemProps } from "semantic-ui-react";
+
+import { Dropdown, Input, Button, Pagination } from "semantic-ui-react";
 import categoriesData from "./data/categories.json";
 
-import "./App.css";
+import css from "./App.module.scss";
 import { Stars } from "./components/Stars";
 import { DropdownProps } from "semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown";
+import { PaginationProps } from "semantic-ui-react/dist/commonjs/addons/Pagination/Pagination";
 
 const ITEMS_PER_PAGE = 20;
 const URL =
@@ -24,7 +25,7 @@ function App() {
   const [professionals, setProfessionals] = useState<Pro[]>([]);
   const [paginationOffset, setPaginationOffset] = useState(0);
   const [categoryId, setCategoryId] = useState<number>(2);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean | undefined>(false);
 
   useEffect(() => {
     if (isLoading) {
@@ -61,9 +62,15 @@ function App() {
       });
   }, [paginationOffset, categoryId]);
 
-  const handlePageClick = (page: { selected: number }) => {
-    console.log(page.selected);
-    setPaginationOffset(page.selected * ITEMS_PER_PAGE);
+  const handlePageClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    data: PaginationProps
+  ) => {
+    console.log(event);
+    console.log(data);
+    if (typeof data.activePage === "number") {
+      setPaginationOffset(data.activePage * ITEMS_PER_PAGE);
+    }
   };
 
   const handleCategoryChange = (
@@ -74,7 +81,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={css.App}>
       <div>
         <h1>Your site</h1>
         <form>
@@ -92,36 +99,35 @@ function App() {
         "Loading data..."
       ) : (
         <table>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Postcode</th>
-            <th>Review Rating</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Postcode</th>
+              <th>Review Rating</th>
+            </tr>
+          </thead>
           {professionals.map(({ name, id, main_address, review_rating }) => {
             return (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>{main_address.postcode}</td>
-                <td>
-                  <Stars rating={review_rating} />
-                </td>
-              </tr>
+              <tbody>
+                <tr key={id}>
+                  <td>{id}</td>
+                  <td>{name}</td>
+                  <td>{main_address.postcode}</td>
+                  <td>
+                    <Stars rating={review_rating} />
+                  </td>
+                </tr>
+              </tbody>
             );
           })}
         </table>
       )}
-      <ReactPaginate
-        pageCount={Math.ceil(paginationCount / ITEMS_PER_PAGE)}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
+      <Pagination
+        totalPages={Math.ceil(paginationCount / ITEMS_PER_PAGE)}
         onPageChange={handlePageClick}
-        // containerClassName={"pagination"}
-        // activeClassName={"active"}
-        // disableInitialCallback={true}
+        disabled={isLoading}
       />
-      <b>Items count: {paginationCount}</b>
     </div>
   );
 }
