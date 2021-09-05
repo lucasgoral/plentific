@@ -31,7 +31,6 @@ export const ProfessionalsForm: React.FC<Props> = ({
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
     setSelectedPage(0);
     setCategoryId(data.category);
     setPostcode(data.postcode.replace(/ /g, "").toLowerCase());

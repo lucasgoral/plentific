@@ -64,7 +64,6 @@ const Professionals = () => {
     data: PaginationProps
   ) => {
     if (typeof data.activePage === "number") {
-      console.log(data.activePage);
       setSelectedPage(data.activePage - 1);
     }
   };
