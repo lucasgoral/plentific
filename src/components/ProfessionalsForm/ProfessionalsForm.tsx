@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Dropdown, Form, Input, Label, Menu } from "semantic-ui-react";
-import css from "./App.module.scss";
+import css from "./ProfessionalsForm.module.scss";
 
-import categoriesData from "./data/categories.json";
+import categoriesData from "../../data/categories.json";
 import { useForm } from "react-hook-form";
 
 const categories = [

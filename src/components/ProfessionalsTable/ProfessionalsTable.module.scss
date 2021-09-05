@@ -1,0 +1,34 @@
+@import "./../../variables";
+
+.table {
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 2rem;
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: $lightgray
+    }
+
+    td {
+      padding: 0.25rem 0;
+    }
+  }
+
+
+}
+
+.segment {
+  width: 100%;
+  padding: 1em 0 !important;
+}

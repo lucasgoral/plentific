@@ -1,8 +1,8 @@
 import React from "react";
-import css from "./App.module.scss";
+import css from "./ProfessionalsTable.module.scss";
 import { Loader, Segment } from "semantic-ui-react";
-import { Stars } from "./components/Stars";
-import { Pro } from "./types/professionals";
+import { Stars } from "../Stars/Stars";
+import { Pro } from "../../types/professionals";
 
 interface Props {
   isLoading: boolean;
@@ -46,7 +46,7 @@ export const ProfessionalsTable: React.FC<Props> = ({
             </tbody>
           </table>
         ) : (
-          <p>No results. Please enter the correct postcode.</p>
+          <p>No results for the selected profession and postcode.</p>
         )}
       </Segment>
     </div>

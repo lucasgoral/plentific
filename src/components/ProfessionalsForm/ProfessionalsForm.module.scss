@@ -1,0 +1,24 @@
+@import "./../../variables";
+
+.segment {
+  width: 100%;
+  padding: 1em 0 !important;
+}
+
+.form {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: wrap;
+  max-width: 768px!important;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  @media  (max-width: $sm-breakpoint) {
+    > div {
+     width: 100%;
+      border: red;
+    }
+  }
+
+
+
+}

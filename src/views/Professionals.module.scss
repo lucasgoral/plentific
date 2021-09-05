@@ -1,0 +1,55 @@
+@import "./../variables";
+
+
+
+.app {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.header {
+  text-align: left;
+  color: $primary;
+  margin: 2rem;
+}
+
+.pagination {
+
+  list-style: none;
+  display: flex;
+  justify-content: center;
+
+  li {
+
+    border: 1px solid $gray;
+    border-radius: 5px;
+    margin: 5px;
+
+    a {
+      padding: 1rem;
+      display: block;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+
+  }
+}
+
+.selected {
+  border: $darkgray 1px solid !important;
+  background: $darkgray;
+
+  a {
+    color: #FFF;
+  }
+
+}
+
+.disabled {
+  opacity: 0.25;
+}
