@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Professionals, Pro } from "./professionalsTypes";
+import { useForm } from "react-hook-form";
 
-import { Dropdown, Input, Button, Pagination } from "semantic-ui-react";
+import {
+  Dropdown,
+  Input,
+  Button,
+  Pagination,
+  Dimmer,
+  Loader,
+  Segment,
+  Menu,
+  Label,
+  Form,
+} from "semantic-ui-react";
 import categoriesData from "./data/categories.json";
 
 import css from "./App.module.scss";
 import { Stars } from "./components/Stars";
-import { DropdownProps } from "semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown";
 import { PaginationProps } from "semantic-ui-react/dist/commonjs/addons/Pagination/Pagination";
 
 const ITEMS_PER_PAGE = 20;
@@ -23,9 +34,10 @@ console.log(categoriesData);
 function App() {
   const [paginationCount, setPaginationCount] = useState<number>(0);
   const [professionals, setProfessionals] = useState<Pro[]>([]);
-  const [paginationOffset, setPaginationOffset] = useState(0);
+  const [selectedPage, setSelectedPage] = useState(0);
   const [categoryId, setCategoryId] = useState<number>(2);
   const [isLoading, setIsLoading] = useState<boolean | undefined>(false);
+  const [postCode, setPostcode] = useState<string>("sw11");
 
   useEffect(() => {
     if (isLoading) {
@@ -34,10 +46,10 @@ function App() {
     setIsLoading(true);
     fetch(URL, {
       method: "POST",
-      body: `{"category_id": ${categoryId} , "location": "sw11"}`,
+      body: `{"category_id": "${categoryId}", "location": "${postCode}"}`,
       headers: {
         "Content-Type": "application/json",
-        "x-pagination-offset": paginationOffset.toString(),
+        "x-pagination-offset": (selectedPage * ITEMS_PER_PAGE).toString(),
         "x-pagination-limit": ITEMS_PER_PAGE.toString(),
       },
     })
@@ -52,6 +64,9 @@ function App() {
       .then((data: Professionals) => {
         if (data.code === 0) {
           setProfessionals([...data.response.pros]);
+        } else {
+          setProfessionals([]);
+          setPaginationCount(0);
         }
       })
       .catch((error) => {
@@ -60,71 +75,107 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [paginationOffset, categoryId]);
+  }, [selectedPage, postCode, categoryId]);
+
+  const { handleSubmit, setValue } = useForm({
+    defaultValues: { category: 2, postcode: "sw11" },
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    setSelectedPage(0);
+    setCategoryId(data.category);
+    setPostcode(data.postcode.replace(/ /g, "").toLowerCase());
+  };
 
   const handlePageClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
     data: PaginationProps
   ) => {
-    console.log(event);
-    console.log(data);
     if (typeof data.activePage === "number") {
-      setPaginationOffset(data.activePage * ITEMS_PER_PAGE);
+      setSelectedPage(data.activePage - 1);
     }
-  };
-
-  const handleCategoryChange = (
-    event: React.SyntheticEvent<HTMLElement>,
-    data: DropdownProps
-  ) => {
-    setCategoryId(data.value as number);
   };
 
   return (
     <div className={css.App}>
-      <div>
-        <h1>Your site</h1>
-        <form>
-          <Dropdown
-            placeholder="Categories"
-            options={categories}
-            onChange={handleCategoryChange}
-            defaultValue={categoryId}
-          ></Dropdown>
-          <Input label="Post code"></Input>
-          <Button>Submit</Button>
-        </form>
-      </div>
-      {isLoading ? (
-        "Loading data..."
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Postcode</th>
-              <th>Review Rating</th>
-            </tr>
-          </thead>
-          {professionals.map(({ name, id, main_address, review_rating }) => {
-            return (
-              <tbody>
-                <tr key={id}>
-                  <td>{id}</td>
-                  <td>{name}</td>
-                  <td>{main_address.postcode}</td>
-                  <td>
-                    <Stars rating={review_rating} />
-                  </td>
+      <h1>Your site</h1>
+      <Form className={css.form} onSubmit={handleSubmit(onSubmit)}>
+        <Form.Field inline>
+          <Label pointing="right">Profession</Label>
+          <Menu compact>
+            <Dropdown
+              simple
+              item
+              placeholder="Categories"
+              options={categories}
+              name="category"
+              onChange={(e, { name, value }) => {
+                setValue(name, value);
+              }}
+              defaultValue={categoryId}
+            />
+          </Menu>
+        </Form.Field>
+
+        <Form.Field inline>
+          <Label pointing="right">Post code</Label>
+          <Input
+            size="large"
+            name="postcode"
+            onChange={async (e, { name, value }) => {
+              setValue(name, value);
+            }}
+            defaultValue={postCode}
+          />
+        </Form.Field>
+        <Form.Field inline>
+          <Button type="submit" size="large">
+            Submit
+          </Button>
+        </Form.Field>
+      </Form>
+
+      <div className={css.table}>
+        <Segment className={css.segment}>
+          {isLoading ? (
+            <Loader active />
+          ) : !!professionals.length ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Postcode</th>
+                  <th>Review Rating</th>
                 </tr>
+              </thead>
+              <tbody>
+                {professionals.map(
+                  ({ name, id, main_address, review_rating }) => {
+                    return (
+                      <tr key={id}>
+                        <td>{id}</td>
+                        <td>{name}</td>
+                        <td>{main_address.postcode}</td>
+                        <td>
+                          <Stars rating={review_rating} />
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
               </tbody>
-            );
-          })}
-        </table>
-      )}
+            </table>
+          ) : (
+            <p>No results. Please enter the correct postcode.</p>
+          )}
+        </Segment>
+      </div>
+
       <Pagination
-        totalPages={Math.ceil(paginationCount / ITEMS_PER_PAGE)}
+        activePage={selectedPage + 1}
+        totalPages={Math.ceil(paginationCount / ITEMS_PER_PAGE - 1)}
         onPageChange={handlePageClick}
         disabled={isLoading}
       />

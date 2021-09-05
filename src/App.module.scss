@@ -1,6 +1,8 @@
 $active: #DD000;
 $gray: #e0e1e2;
 $darkgray: #555;
+$lightgray: #EFEFEF;
+
 
 .App {
   text-align: center;
@@ -37,6 +39,7 @@ $darkgray: #555;
 .selected {
   border: $darkgray 1px solid !important;
   background: $darkgray;
+
   a {
     color: #FFF;
   }
@@ -45,4 +48,48 @@ $darkgray: #555;
 
 .disabled {
   opacity: 0.25;
+}
+
+.table {
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 2rem;
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+      background: $lightgray
+    }
+
+    td {
+      padding: 0.25rem 0;
+    }
+  }
+
+
+}
+
+.segment {
+  width: 100%;
+  padding: 1em 0!important;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+
+
+  > div {
+    margin: 0 1rem!important;
+  }
 }
