@@ -30,7 +30,7 @@ export const ProfessionalsForm: React.FC<Props> = ({
     defaultValues: { category: 2, postcode: "sw11" },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: { category: number; postcode: string }) => {
     setSelectedPage(0);
     setCategoryId(data.category);
     setPostcode(data.postcode.replace(/ /g, "").toLowerCase());
