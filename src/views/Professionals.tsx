@@ -6,20 +6,20 @@ import { Pagination } from "semantic-ui-react";
 import css from "./Professionals.module.scss";
 
 import { PaginationProps } from "semantic-ui-react/dist/commonjs/addons/Pagination/Pagination";
-import { ProfessionalsTable } from "../components/ProfessionalsTable/ProfessionalsTable";
 import { ProfessionalsForm } from "../components/ProfessionalsForm/ProfessionalsForm";
+import { ProfessionalsTable } from "../components/ProfessionalsTable/ProfessionalsTable";
 
 const ITEMS_PER_PAGE = 20;
 export const URL =
   "https://demo.plentific.com/uk/find-a-pro/api/v2/public/pro/search-pros/";
 
 const Professionals = () => {
-  const [paginationCount, setPaginationCount] = useState<number>(0);
-  const [professionals, setProfessionals] = useState<Pro[]>([]);
-  const [selectedPage, setSelectedPage] = useState(0);
   const [categoryId, setCategoryId] = useState<number>(2);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [paginationCount, setPaginationCount] = useState<number>(0);
   const [postCode, setPostcode] = useState<string>("sw11");
+  const [professionals, setProfessionals] = useState<Pro[]>([]);
+  const [selectedPage, setSelectedPage] = useState(0);
 
   useEffect(() => {
     if (isLoading) {
@@ -84,9 +84,9 @@ const Professionals = () => {
       <ProfessionalsTable isLoading={isLoading} professionals={professionals} />
       <Pagination
         activePage={selectedPage + 1}
-        totalPages={Math.ceil(paginationCount / ITEMS_PER_PAGE)}
-        onPageChange={handlePageClick}
         disabled={isLoading || paginationCount === 0}
+        onPageChange={handlePageClick}
+        totalPages={Math.ceil(paginationCount / ITEMS_PER_PAGE)}
       />
     </div>
   );

@@ -1,8 +1,8 @@
 import React from "react";
 import css from "./ProfessionalsTable.module.scss";
 import { Loader, Segment } from "semantic-ui-react";
-import { Stars } from "../Stars/Stars";
 import { Pro } from "../../types/professionals";
+import { Stars } from "../Stars/Stars";
 
 interface Props {
   isLoading: boolean;

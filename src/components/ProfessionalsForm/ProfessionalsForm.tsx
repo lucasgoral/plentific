@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Dropdown, Form, Input, Label, Menu } from "semantic-ui-react";
-import css from "./ProfessionalsForm.module.scss";
-
 import categoriesData from "../../data/categories.json";
+import { Button, Dropdown, Form, Input, Label, Menu } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
+import css from "./ProfessionalsForm.module.scss";
 
 const categories = [
   ...categoriesData
@@ -12,28 +11,28 @@ const categories = [
 ];
 
 interface Props {
-  setSelectedPage: (page: number) => void;
+  categoryId: number;
+  postCode: string;
   setCategoryId: (id: number) => void;
   setPostcode: (code: string) => void;
-  postCode: string;
-  categoryId: number;
+  setSelectedPage: (page: number) => void;
 }
 
 export const ProfessionalsForm: React.FC<Props> = ({
-  setSelectedPage,
+  categoryId,
+  postCode,
   setCategoryId,
   setPostcode,
-  postCode,
-  categoryId,
+  setSelectedPage,
 }) => {
   const { handleSubmit, setValue } = useForm({
     defaultValues: { category: 2, postcode: "sw11" },
   });
 
   const onSubmit = (data: { category: number; postcode: string }) => {
-    setSelectedPage(0);
     setCategoryId(data.category);
     setPostcode(data.postcode.replace(/ /g, "").toLowerCase());
+    setSelectedPage(0);
   };
 
   return (
@@ -42,15 +41,15 @@ export const ProfessionalsForm: React.FC<Props> = ({
         <Label pointing="right">Profession</Label>
         <Menu compact>
           <Dropdown
-            simple
+            defaultValue={categoryId}
             item
-            placeholder="Categories"
-            options={categories}
             name="category"
             onChange={(e, { name, value }) => {
               setValue(name, value);
             }}
-            defaultValue={categoryId}
+            options={categories}
+            placeholder="Categories"
+            simple
           />
         </Menu>
       </Form.Field>
@@ -58,8 +57,8 @@ export const ProfessionalsForm: React.FC<Props> = ({
       <Form.Field inline>
         <Label pointing="right">Post code</Label>
         <Input
-          size="large"
           name="postcode"
+          size="large"
           onChange={async (e, { name, value }) => {
             setValue(name, value);
           }}
