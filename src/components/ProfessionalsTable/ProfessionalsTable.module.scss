@@ -7,6 +7,10 @@
   justify-content: center;
   align-content: center;
   margin: 2rem;
+  @media (max-width: $sm-breakpoint) {
+    margin: 2rem 0;
+  }
+
 
   table {
     width: 100%;
@@ -21,7 +25,7 @@
     }
 
     td {
-      padding: 0.25rem 0;
+      padding: 0.25rem;
     }
   }
 

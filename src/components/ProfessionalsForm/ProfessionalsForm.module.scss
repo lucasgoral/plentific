@@ -9,16 +9,15 @@
   display: flex;
   justify-content: space-around;
   flex-flow: wrap;
-  max-width: 768px!important;
+  max-width: 768px !important;
   margin-left: 1rem;
   margin-right: 1rem;
-  @media  (max-width: $sm-breakpoint) {
+  @media (max-width: $sm-breakpoint) {
     > div {
-     width: 100%;
+      width: 100%;
       border: red;
     }
   }
-
 
 
 }

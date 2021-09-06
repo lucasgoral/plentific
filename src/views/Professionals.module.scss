@@ -13,6 +13,9 @@
   text-align: left;
   color: $primary;
   margin: 2rem;
+  @media (max-width: $sm-breakpoint) {
+    margin: 2rem;
+  }
 }
 
 .pagination {
