@@ -10,7 +10,7 @@ import { ProfessionalsTable } from "../components/ProfessionalsTable/Professiona
 import { ProfessionalsForm } from "../components/ProfessionalsForm/ProfessionalsForm";
 
 const ITEMS_PER_PAGE = 20;
-const URL =
+export const URL =
   "https://demo.plentific.com/uk/find-a-pro/api/v2/public/pro/search-pros/";
 
 const Professionals = () => {
