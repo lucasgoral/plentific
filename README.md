@@ -1,6 +1,7 @@
-# Getting Started with Create React Professionals
+# Plentific React Recruitment task
 
-This project was bootstrapped with [Create React Professionals](https://github.com/facebook/create-react-app).
+
+## [Live demo](https://lucasgoral.github.io/plentific/)
 
 ## Available Scripts
 
